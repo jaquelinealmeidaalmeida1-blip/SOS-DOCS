@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Painel de atividades — SOS DOCS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14213d;
+  --ink-soft:#4a5a75;
+  --ink-faint:#7d8a9e;
+  --paper:#eceff3;
+  --card:#ffffff;
+  --rule:#d3dae1;
+  --rule-soft:#e6eaee;
+  --done:#17614c;
+  --done-bg:#e2efe9;
+  --active:#8d5a06;
+  --active-bg:#f6ecd9;
+  --gap:#5b4a8a;
+  --gap-bg:#ebe7f4;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Archivo","Helvetica Neue",Arial,sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+.sheet{max-width:940px;margin:0 auto;padding:0 24px 72px}
+
+.masthead{
+  background:var(--ink);
+  color:#f2f5f8;
+  margin:0 -24px 0;
+  padding:22px 24px;
+}
+.masthead-inner{max-width:940px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:baseline}
+.brand{font-weight:600;font-size:15px;letter-spacing:.01em}
+.brand span{font-weight:400;color:#a9b7ca;margin-left:10px}
+.masthead time{font-size:14px;color:#a9b7ca}
+
+.hero{padding:56px 0 40px;border-bottom:1px solid var(--rule)}
+.hero h1{
+  font-family:"Source Serif 4",Georgia,serif;
+  font-weight:400;
+  font-size:clamp(30px,5.2vw,46px);
+  line-height:1.18;
+  letter-spacing:-.01em;
+  margin:0 0 18px;
+  max-width:22ch;
+}
+.hero p{
+  font-family:"Source Serif 4",Georgia,serif;
+  font-size:18px;line-height:1.7;color:var(--ink-soft);
+  max-width:62ch;margin:0;
+}
+
+.tally{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border-bottom:1px solid var(--rule);
+}
+.tally div{padding:26px 20px 26px 0;border-right:1px solid var(--rule-soft)}
+.tally div:last-child{border-right:0}
+.tally b{display:block;font-size:38px;font-weight:500;line-height:1}
+.tally span{display:block;font-size:14px;color:var(--ink-faint);margin-top:8px}
+
+section{padding:44px 0 0}
+h2{
+  font-size:15px;font-weight:600;margin:0 0 4px;letter-spacing:.005em;
+}
+.lede{font-size:14px;color:var(--ink-faint);margin:0 0 20px;max-width:64ch}
+
+.ledger{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--rule)}
+.ledger th{
+  text-align:left;font-size:13px;font-weight:500;color:var(--ink-faint);
+  padding:12px 16px;border-bottom:1px solid var(--rule);
+}
+.ledger th.mark,.ledger td.mark{text-align:center;width:112px}
+.ledger td{padding:14px 16px;border-bottom:1px solid var(--rule-soft);vertical-align:middle}
+.ledger tr:last-child td{border-bottom:0}
+.ledger .name{font-weight:500}
+.ledger .sub{display:block;font-size:13.5px;color:var(--ink-faint);font-weight:400}
+.ledger tr.pending{background:#fbfbfd}
+.ledger tr.pending .name{color:var(--ink-soft)}
+
+.tick{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--done-bg);color:var(--done)}
+.tick svg{width:12px;height:12px}
+.dash{display:inline-block;width:22px;height:22px;line-height:22px;border-radius:50%;background:#eef0f3;color:var(--ink-faint);font-size:13px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.grid article{background:var(--card);padding:18px 18px 20px}
+.grid h3{font-size:15px;font-weight:500;margin:0 0 4px}
+.grid p{font-size:13.5px;color:var(--ink-faint);margin:0;line-height:1.55}
+
+.pocs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.poc{background:var(--card);padding:18px}
+.poc-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:2px}
+.poc-head h3{font-size:17px;font-weight:600;margin:0}
+.pill{flex:none;font-size:12px;padding:2px 10px;border-radius:3px;background:var(--active-bg);color:var(--active)}
+.pill.cliente{background:var(--done-bg);color:var(--done)}
+.pill.align{background:#e6ebf2;color:var(--ink-soft)}
+.poc .start{font-size:13px;color:var(--ink-faint);margin:0 0 14px}
+.arch{margin:0;padding:0;list-style:none;font-size:14px}
+.arch>li{margin-bottom:7px}
+.arch .hub{font-weight:500}
+.arch ul{list-style:none;margin:6px 0 0;padding:0 0 0 14px;border-left:2px solid var(--rule)}
+.arch ul li{padding:1px 0 1px 8px;color:var(--ink-soft)}
+.ours{color:var(--done);font-weight:500}
+.poc-note{font-size:13.5px;color:var(--ink-faint);margin:14px 0 0}
+
+.clients{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.clients li{
+  background:var(--card);border:1px solid var(--rule);border-radius:3px;
+  padding:7px 13px;font-size:14.5px;
+}
+.clients li.advanced{border-color:#a9c9bd;background:var(--done-bg);color:var(--done);font-weight:500}
+.legend{font-size:13.5px;color:var(--ink-faint);margin:14px 0 0}
+
+.queue{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--rule)}
+.queue li{display:flex;gap:16px;padding:16px;border-bottom:1px solid var(--rule-soft);align-items:flex-start}
+.queue li:last-child{border-bottom:0}
+.tag{
+  flex:none;width:104px;font-size:12.5px;padding:3px 0;text-align:center;border-radius:3px;
+  background:var(--active-bg);color:var(--active);margin-top:2px;
+}
+.tag.cat{background:var(--gap-bg);color:var(--gap)}
+.queue .name{font-weight:500;display:block}
+.queue .sub{font-size:13.5px;color:var(--ink-faint)}
+
+.closing{
+  margin-top:44px;padding:24px;background:var(--ink);color:#dbe3ec;
+  font-family:"Source Serif 4",Georgia,serif;font-size:16.5px;line-height:1.7;
+}
+.closing strong{color:#fff;font-weight:400}
+footer{padding-top:28px;font-size:13px;color:var(--ink-faint)}
+
+@media (max-width:640px){
+  .tally{grid-template-columns:repeat(2,1fr)}
+  .tally div{border-right:0;padding-right:0;border-bottom:1px solid var(--rule-soft)}
+  .ledger th.mark,.ledger td.mark{width:64px;padding-left:4px;padding-right:4px}
+  .ledger th,.ledger td{padding-left:12px;padding-right:12px}
+  .queue li{flex-direction:column;gap:8px}
+  .tag{width:auto;display:inline-block;padding:3px 12px}
+}
+@media print{
+  body{background:#fff}
+  .masthead{background:#fff;color:var(--ink);border-bottom:2px solid var(--ink)}
+  .masthead time,.brand span{color:var(--ink-faint)}
+  .closing{background:#fff;color:var(--ink);border:1px solid var(--rule)}
+  .closing strong{color:var(--ink)}
+  section{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="brand">SOS DOCS<span>Painel de atividades</span></div>
+    <time datetime="2026-09">Setembro de 2026</time>
+  </div>
+</div>
+
+<div class="sheet">
+
+  <div class="hero">
+    <h1>O kit comercial completo da SOS DOCS, do catálogo à POC.</h1>
+    <p>Doze catálogos publicados cobrem a linha inteira de plataformas. Onze órgãos e empresas já viram as ferramentas rodando, seis têm prova de conceito desenhada com arquitetura definida, e há quatro frentes abertas entre documentos de contratação e o catálogo que falta fechar.</p>
+  </div>
+
+  <div class="tally">
+    <div><b>12</b><span>catálogos publicados</span></div>
+    <div><b>11</b><span>clientes atendidos</span></div>
+    <div><b>6</b><span>POCs em curso</span></div>
+    <div><b>4</b><span>outras frentes abertas</span></div>
+  </div>
+
+  <section>
+    <h2>Portfólio catalogado</h2>
+    <p class="lede">Cada plataforma recebeu um catálogo de produto e um catálogo de UST. A última linha é a lacuna que fecha a linha de ofertas.</p>
+    <table class="ledger">
+      <thead>
+        <tr>
+          <th scope="col">Plataforma</th>
+          <th scope="col" class="mark">Catálogo de produto</th>
+          <th scope="col" class="mark">Catálogo de UST</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="name">DocZ</span><span class="sub">SIGAD</span></td>
+          <td class="mark"><span class="tick" role="img" aria-label="Concluído"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1.5 6.5 4.5 9.5 10.5 2.5"/></svg></span></td>
+          <td class="mark"><span class="tick" role="img" aria-label="Concluído"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1.5 6.5 4.5 9.5 10.5 2.5"/></svg></span></td>
+        </tr>
+        <tr>
+          <td><span class="name">SmartDocs</span><span class="sub">BPMS, automatização de processos</span></td>
+          <td class="mark"><span class="tick" role="img" aria-label="Concluído"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1.5 6.5 4.5 9.5 10.5 2.5"/></svg></span></td>
+          <td class="mark"><span class="tick" role="img" aria-label="Concluído"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1.5 6.5 4.5 9.5 10.5 2.5"/></svg></span></td>
+        </tr>
+        <tr>
+          <td><span class="name">InterDoc</span><span class="sub">Barramento de integração</span></td>
+          <td class="mark"><span class="tick" role="img" aria-label="Concluído"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1.5 6.5 4.5 9.5 10.5 2.5"/></svg></span></td>
+          <td class="mark"><span class="tick" role="img" aria-label="Concluído"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1.5 6.5 4.5 9.5 10.5 2.5"/></svg></span></td>
+        </tr>
+        <tr>
+          <td><span class="name">Docfy</span><span class="sub">IDP, motor de IA</span></td>
+          <td class="mark"><span class="tick" role="img" aria-label="Concluído"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1.5 6.5 4.5 9.5 10.5 2.5"/></svg></span></td>
+          <td class="mark"><span class="tick" role="img" aria-label="Concluído"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1.5 6.5 4.5 9.5 10.5 2.5"/></svg></span></td>
+        </tr>
+        <tr>
+          <td><span class="name">Eternal</span><span class="sub">RDC-Arq</span></td>
+          <td class="mark"><span class="tick" role="img" aria-label="Concluído"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1.5 6.5 4.5 9.5 10.5 2.5"/></svg></span></td>
+          <td class="mark"><span class="tick" role="img" aria-label="Concluído"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1.5 6.5 4.5 9.5 10.5 2.5"/></svg></span></td>
+        </tr>
+        <tr>
+          <td><span class="name">Archivematica</span><span class="sub">Preservação digital</span></td>
+          <td class="mark"><span class="tick" role="img" aria-label="Concluído"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1.5 6.5 4.5 9.5 10.5 2.5"/></svg></span></td>
+          <td class="mark"><span class="tick" role="img" aria-label="Concluído"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1.5 6.5 4.5 9.5 10.5 2.5"/></svg></span></td>
+        </tr>
+        <tr class="pending">
+          <td><span class="name">Guarda, digitalização e higienização</span><span class="sub">Serviços físicos, catálogo em elaboração</span></td>
+          <td class="mark"><span class="dash" role="img" aria-label="Em elaboração">—</span></td>
+          <td class="mark"><span class="dash" role="img" aria-label="Não iniciado">—</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Materiais e eventos</h2>
+    <p class="lede">O que sustenta a operação comercial no dia a dia.</p>
+    <div class="grid">
+      <article>
+        <h3>Slides dos produtos</h3>
+        <p>Deck de apresentação de toda a linha de plataformas.</p>
+      </article>
+      <article>
+        <h3>Playbook comercial</h3>
+        <p>Guia de abordagem e argumentação para o time.</p>
+      </article>
+      <article>
+        <h3>Ambientes DEMO</h3>
+        <p>Plataformas atualizadas e prontas para demonstração ao vivo.</p>
+      </article>
+      <article>
+        <h3>Evento Telebras</h3>
+        <p>Apoio de marketing ao lado do head Danilo Brito.</p>
+      </article>
+      <article>
+        <h3>ENADOC, Polícia Rodoviária Federal</h3>
+        <p>Organização do evento de ponta a ponta.</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Clientes que já viram as ferramentas</h2>
+    <p class="lede">Onze apresentações realizadas. As destacadas avançaram para a etapa de discovery.</p>
+    <ul class="clients">
+      <li>TJMS</li>
+      <li class="advanced">Infraero</li>
+      <li>SEBRAE/PB</li>
+      <li>Asa Comix</li>
+      <li class="advanced">BRB</li>
+      <li>Codevasf</li>
+      <li>FINATEC</li>
+      <li>ANP</li>
+      <li>MPOR</li>
+      <li>CREF15/PI</li>
+      <li class="advanced">FINEP</li>
+    </ul>
+    <p class="legend">Três de onze apresentações evoluíram para discovery, uma conversão de 27%.</p>
+  </section>
+
+  <section>
+    <h2>Provas de conceito em curso</h2>
+    <p class="lede">Seis arquiteturas desenhadas. O InterDoc é o barramento em todas elas, ligando as plataformas da SOS DOCS aos sistemas que o cliente já usa. Em verde, o que é nosso.</p>
+    <div class="pocs">
+
+      <div class="poc">
+        <div class="poc-head"><h3>MEC</h3><span class="pill cliente">Cliente</span></div>
+        <p class="start">Início em 17 de agosto</p>
+        <ul class="arch">
+          <li><span class="hub ours">InterDoc</span>
+            <ul><li>Microtarget</li><li>Softexpert</li></ul>
+          </li>
+          <li><span class="ours">Docfy</span></li>
+        </ul>
+      </div>
+
+      <div class="poc">
+        <div class="poc-head"><h3>AGU</h3><span class="pill">Discovery</span></div>
+        <p class="start">Início em 18 de agosto</p>
+        <ul class="arch">
+          <li><span class="hub ours">InterDoc</span>
+            <ul><li>Microtarget</li><li>Softexpert</li></ul>
+          </li>
+          <li><span class="ours">Docfy</span></li>
+          <li><span class="ours">DocZ</span></li>
+          <li><span class="ours">Eternal</span></li>
+        </ul>
+      </div>
+
+      <div class="poc">
+        <div class="poc-head"><h3>Infraero</h3><span class="pill align">Alinhamento</span></div>
+        <p class="start">Data de início a definir</p>
+        <ul class="arch">
+          <li><span class="hub ours">InterDoc</span>
+            <ul><li>Softexpert</li><li>Hyland</li></ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="poc">
+        <div class="poc-head"><h3>BRB</h3><span class="pill">Discovery</span></div>
+        <p class="start">Início em 1º de agosto</p>
+        <ul class="arch">
+          <li><span class="hub ours">InterDoc</span>
+            <ul>
+              <li>Alfresco</li>
+              <li><span class="ours">SmartDocs</span></li>
+              <li><span class="ours">DocZ</span></li>
+              <li><span class="ours">Eternal</span></li>
+              <li>Solução de assinatura digital</li>
+              <li>Sistema legado</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="poc">
+        <div class="poc-head"><h3>TCU</h3><span class="pill">Discovery</span></div>
+        <p class="start">Data de início a definir</p>
+        <ul class="arch">
+          <li><span class="hub ours">InterDoc</span>
+            <ul><li>Microtarget</li><li>Softexpert</li></ul>
+          </li>
+          <li><span class="ours">Docfy</span></li>
+        </ul>
+      </div>
+
+      <div class="poc">
+        <div class="poc-head"><h3>FINEP</h3><span class="pill">Discovery</span></div>
+        <p class="start">Início em 3 de agosto</p>
+        <ul class="arch">
+          <li><span class="hub ours">InterDoc</span>
+            <ul>
+              <li><span class="ours">DocZ</span></li>
+              <li><span class="ours">SmartDocs</span></li>
+              <li><span class="ours">Docfy</span></li>
+              <li><span class="ours">Eternal</span></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+    <p class="poc-note">MEC, AGU e TCU repetem a mesma combinação: InterDoc integrando Microtarget e Softexpert, com o Docfy por cima. A FINEP é a única POC feita só com plataformas próprias, sem sistema de terceiros no meio.</p>
+  </section>
+
+  <section>
+    <h2>Outras frentes em andamento</h2>
+    <p class="lede">Três documentos de contratação e o catálogo que falta.</p>
+    <ul class="queue">
+      <li>
+        <span class="tag">Termo de referência</span>
+        <span><span class="name">SESC e SENAC Goiás</span><span class="sub">Elaboração do TR.</span></span>
+      </li>
+      <li>
+        <span class="tag">Termo de referência</span>
+        <span><span class="name">Banco da Amazônia</span><span class="sub">Elaboração do TR.</span></span>
+      </li>
+      <li>
+        <span class="tag">Estudo preliminar</span>
+        <span><span class="name">Polícia Federal</span><span class="sub">Elaboração do ETP.</span></span>
+      </li>
+      <li>
+        <span class="tag cat">Catálogo</span>
+        <span><span class="name">Guarda, digitalização e higienização</span><span class="sub">Novo produto de serviços físicos, completa a linha de ofertas.</span></span>
+      </li>
+    </ul>
+  </section>
+
+  <div class="closing">
+    <strong>Onde a agulha se move agora:</strong> a POC da FINEP roda um processo real do cliente de ponta a ponta e não depende de nenhum sistema de terceiros, então é a que fica pronta primeiro e vira o modelo de demonstração para as outras cinco. O padrão InterDoc com Microtarget e Softexpert já se repete em três órgãos: vale empacotá-lo como conector reutilizável em vez de reconstruir a integração a cada discovery.
+  </div>
+
+  <footer>Painel de atividades individuais na SOS DOCS. Dados consolidados em setembro de 2026.</footer>
+
+</div>
+
+</body>
+</html>
