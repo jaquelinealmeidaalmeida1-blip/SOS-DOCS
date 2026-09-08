@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fluxo do Plano de Classificação</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --panel-alt: #eef5ff;
+      --line: #d6e2ef;
+      --primary: #174c7a;
+      --primary-soft: #eaf2ff;
+      --accent: #1d9b8d;
+      --accent-soft: #e7faf7;
+      --text: #1b2430;
+      --muted: #5e6b7a;
+      --shadow: 0 12px 32px rgba(23, 76, 122, 0.12);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #f4f7fb 0%, #edf3fb 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 24px;
+    }
+
+    .header {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 28px 18px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 2.5vw, 3.2rem);
+      line-height: 1.1;
+      color: var(--primary);
+    }
+
+    .subtitle {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 780px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(140px, 1fr));
+      gap: 14px;
+      align-items: stretch;
+      margin: 28px 0 30px;
+    }
+
+    .step {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px 14px;
+      box-shadow: var(--shadow);
+      min-height: 126px;
+    }
+
+    .step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .step-number {
+      display: inline-flex;
+      width: 30px;
+      height: 30px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .step h3 {
+      margin: 0 0 8px;
+      font-size: 0.96rem;
+      color: var(--text);
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .panel h2 {
+      margin: 0 0 18px;
+      font-size: 1.3rem;
+      color: var(--primary);
+    }
+
+    .function-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .function-card {
+      padding: 18px 18px 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    }
+
+    .function-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .code-tag {
+      background: var(--primary);
+      color: #fff;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+    }
+
+    .function-card h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .subfunction {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.6;
+    }
+
+    .subfunction li + li {
+      margin-top: 8px;
+    }
+
+    .tipologias {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tipologia {
+      background: var(--accent-soft);
+      color: #0f6d64;
+      border: 1px solid rgba(29, 155, 141, 0.2);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .summary {
+      display: grid;
+      gap: 16px;
+    }
+
+    .mini-card {
+      background: var(--panel-alt);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .mini-card h3 {
+      margin: 0 0 8px;
+      font-size: 0.95rem;
+      color: var(--primary);
+    }
+
+    .big-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 0;
+    }
+
+    .mini-card p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.83rem;
+      line-height: 1.5;
+    }
+
+    .legend {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .legend li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot.blue { background: var(--primary); }
+    .dot.green { background: var(--accent); }
+    .dot.gray { background: #9aa9bb; }
+
+    @media (max-width: 900px) {
+      .flow {
+        grid-template-columns: repeat(2, minmax(180px, 1fr));
+      }
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .step:not(:last-child)::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .flow {
+        grid-template-columns: 1fr;
+      }
+      .container {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="eyebrow">Fluxo de trabalho</div>
+      <h1>Fluxo do Plano de Classificação e Registro Documental</h1>
+      <p class="subtitle">
+        Sequência operacional para recepção, classificação, seleção e arquivamento dos documentos
+        conforme os códigos funcionais, subfunções e tipologias previstas pelo plano institucional.
+      </p>
+    </header>
+
+    <section class="flow" id="flow"></section>
+
+    <div class="grid">
+      <section class="panel">
+        <h2>Estrutura funcional do plano</h2>
+        <div class="function-list" id="functions"></div>
+      </section>
+
+      <aside class="summary">
+        <div class="mini-card">
+          <h3>Instituição</h3>
+          <p class="big-number" id="institution">—</p>
+          <p>Plano de classificação em vigor.</p>
+        </div>
+
+        <div class="mini-card">
+          <h3>Resumo</h3>
+          <p id="summaryText">—</p>
+        </div>
+
+        <div class="mini-card">
+          <h3>Legenda</h3>
+          <ul class="legend">
+            <li><span class="dot blue"></span> Função / subfunção</li>
+            <li><span class="dot green"></span> Tipologia documental</li>
+            <li><span class="dot gray"></span> Registro e controle</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const planoClassificacao = {
+      versao: "1.0",
+      instituicao: "SEBRAE-PB",
+      funcoes: [
+        {
+          codigo: "010",
+          descricao: "Gestão Estratégica e Direção Superior",
+          subfuncoes: [
+            {
+              codigo: "010.1",
+              descricao: "Atos do Conselho Deliberativo (CDE)",
+              tipologias: [
+                "Resolução Deliberativa",
+                "Resolução CDE",
+                "Resolução ad referendum",
+                "Portaria do CDE"
+              ]
+            },
+            {
+              codigo: "010.2",
+              descricao: "Atos da Diretoria Executiva (DIREX)",
+              tipologias: [
+                "Pauta da DIREX",
+                "Pauta da DIREX Ampliada",
+                "Ata da DIREX",
+                "Ata da DIREX Ampliada",
+                "Resolução da DIREX",
+                "Resolução da DIREX Ampliada",
+                "Portaria (SUPER/DIAF/DITEC)",
+                "Relatório Mensal da DIREX"
+              ]
+            }
+          ]
+        },
+        {
+          codigo: "071",
+          descricao: "Comunicação Institucional Oficial",
+          subfuncoes: [],
+          tipologias: [
+            "Carta (SUPER/DIAF/DITEC)",
+            "Solicitação DIREX",
+            "Ofício do CDE"
+          ]
+        },
+        {
+          codigo: "312.1",
+          descricao: "Missão Internacional",
+          tipologias: ["Proposta MIS"]
+        }
+      ]
+    };
+
+    const steps = [
+      { title: "Recepção", text: "Recebimento e identificação do documento" },
+      { title: "Classificação", text: "Atribuição da função e subfunção" },
+      { title: "Registro", text: "Definição da tipologia e controle" },
+      { title: "Validação", text: "Conferência da integridade documental" },
+      { title: "Arquivamento", text: "Organização e guarda no sistema" },
+      { title: "Consulta", text: "Acesso, uso e destinação final" }
+    ];
+
+    const flowEl = document.getElementById("flow");
+    flowEl.innerHTML = steps.map((step, index) => `
+      <div class="step">
+        <div class="step-number">${index + 1}</div>
+        <h3>${step.title}</h3>
+        <p>${step.text}</p>
+      </div>
+    `).join("");
+
+    document.getElementById("institution").textContent = planoClassificacao.instituicao;
+
+    const totalFuncoes = planoClassificacao.funcoes.length;
+    const totalTipologias = planoClassificacao.funcoes.reduce((acc, func) => {
+      const funcTipologias = func.tipologias ? func.tipologias.length : 0;
+      const subTipologias = (func.subfuncoes || []).reduce((sum, sub) => sum + (sub.tipologias ? sub.tipologias.length : 0), 0);
+      return acc + funcTipologias + subTipologias;
+    }, 0);
+
+    document.getElementById("summaryText").textContent = `${totalFuncoes} funções e ${totalTipologias} tipologias documentais em fluxo, garantindo organização, rastreabilidade e controle institucional.`;
+
+    const functionsEl = document.getElementById("functions");
+
+    functionsEl.innerHTML = planoClassificacao.funcoes.map(func => {
+      const subFunctionList = (func.subfuncoes || []).map(sub => `
+        <li>
+          <strong>${sub.codigo}</strong> — ${sub.descricao}
+          ${sub.tipologias && sub.tipologias.length ? `
+            <div class="tipologias">
+              ${sub.tipologias.map(item => `<span class="tipologia">${item}</span>`).join("")}
+            </div>
+          ` : ""}
+        </li>
+      `).join("");
+
+      const tipologias = (func.tipologias || []).map(item => `<span class="tipologia">${item}</span>`).join("");
+
+      return `
+        <article class="function-card">
+          <div class="function-top">
+            <span class="code-tag">${func.codigo}</span>
+            <h3>${func.descricao}</h3>
+          </div>
+          ${func.subfuncoes && func.subfuncoes.length ? `
+            <ul class="subfunction">${subFunctionList}</ul>
+          ` : ""}
+          ${tipologias ? `<div class="tipologias">${tipologias}</div>` : ""}
+        </article>
+      `;
+    }).join("");
+  </script>
+</body>
+</html>
